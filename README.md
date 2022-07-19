@@ -1,4 +1,9 @@
-Api demo with Flask
+# Api demo with Flask
+
+Requisitos:
+* Python 3.7
+* Dependencias en requirements.txt
+
 
 Dependencias:
 ```
