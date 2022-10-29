@@ -3,6 +3,7 @@ pipeline {
 
   parameters {
     string(name: 'DOCKERHUB_CREDENTIAL', defaultValue: 'dockerhub-token', description: 'Acceso de escritura a docker hub')
+    booleanParam(name: 'UPLOAD', defaultValue: false, description: 'Upload hacia docker hub')
   }
 
   environment {
@@ -47,6 +48,11 @@ pipeline {
     }
 
     stage ("Upload") {
+      when {
+        expression {
+            return params.UPLOAD ==~ /(?i)(Y|YES|T|TRUE|ON|RUN)/
+        }
+      }
       steps {
         withCredentials([usernamePassword(credentialsId: "${params.DOCKERHUB_CREDENTIAL}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
