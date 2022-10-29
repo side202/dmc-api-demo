@@ -5,6 +5,10 @@ pipeline {
     string(name: 'DOCKERHUB_CREDENTIAL', defaultValue: 'dockerhub-token', description: 'Acceso de escritura a docker hub')
   }
 
+  environment {
+    ARTIFACT = "${env.BUILD_NUMBER}.zip"
+  }
+
   stages {
 
     stage ("Repo") {
@@ -15,6 +19,13 @@ pipeline {
 
     stage ("Build") {
       steps {
+        // TODO mejorar con script
+        sh "zip -r ${env.ARTIFACT} src/"
+
+        echo "${env.BUILD_NUMBER}"
+        echo "${env.ARTIFACT}"
+        sh "echo ${env.BRANCH_NAME}"
+        
         sh "./docker-build.sh ${env.BUILD_NUMBER}"
       }
     }
@@ -49,4 +60,13 @@ pipeline {
     }
 
   }
+
+  post {
+    always {
+      archiveArtifacts artifacts: "${ARTIFACT}", fingerprint: true, onlyIfSuccessful: true
+      sh "rm -f ${ARTIFACT}"
+      echo "Job has finished"
+    }
+  }
+
 }
