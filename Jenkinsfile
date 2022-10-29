@@ -24,7 +24,7 @@ pipeline {
 
         echo "${env.BUILD_NUMBER}"
         echo "${env.ARTIFACT}"
-        sh "echo ${env.BRANCH_NAME}"
+        sh "echo ${env.GIT_BRANCH}"
         
         sh "./docker-build.sh ${env.BUILD_NUMBER}"
       }
