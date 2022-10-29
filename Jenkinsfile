@@ -23,8 +23,14 @@ pipeline {
 
     stage ("Upload") {
       steps {
-        // TODO mejorar con script
-        sh "docker push mario21ic/dmc-api:${env.BUILD_NUMBER}"
+        withCredentials([usernamePassword(credentialsId: "dockerhub-token", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+          sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+
+          // TODO: mejorar con script
+          sh "docker push mario21ic/dmc-api:${env.BUILD_NUMBER}"
+
+          sh "docker logout"
+        }
       }
     }
 
