@@ -16,9 +16,17 @@ pipeline {
     }
 
     stage ("Test") {
-      steps {
-        sh "echo 'ejecucion de tests'"
-      }
+        parallel (
+          unit: {
+            echo "pruebas unitarias"
+          },
+          syntax: {
+            echo "pruebas de sintaxis"
+          },
+          linter: {
+            echo "flake8"
+          }
+        )
     }
 
     stage ("Upload") {
