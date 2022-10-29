@@ -16,6 +16,7 @@ pipeline {
     }
 
     stage ("Test") {
+      steps {
         parallel (
           unit: {
             echo "pruebas unitarias"
@@ -27,6 +28,7 @@ pipeline {
             echo "flake8"
           }
         )
+      }
     }
 
     stage ("Upload") {
