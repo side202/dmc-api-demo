@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  parameters {
+    string(name: 'DOCKERHUB_CREDENTIAL', defaultValue: 'dockerhub-token', description: 'Acceso de escritura a docker hub')
+  }
+
   stages {
 
     stage ("Repo") {
@@ -33,7 +37,7 @@ pipeline {
 
     stage ("Upload") {
       steps {
-        withCredentials([usernamePassword(credentialsId: "dockerhub-token", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        withCredentials([usernamePassword(credentialsId: "${params.DOCKERHUB_CREDENTIAL}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
 
           // TODO: mejorar con script
