@@ -17,7 +17,7 @@ pipeline {
         
         stage ("Test") {
 	    steps {
-               sh "ejecucion de tests"
+               sh "echo ejecucion de tests"
             }
 	}
 	stage ("Upload"){
