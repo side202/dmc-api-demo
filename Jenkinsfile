@@ -22,7 +22,7 @@ pipeline {
 	}
 	stage ("Upload"){
 	    steps {
-	      echo "subir a docker hub"
+	      sh "docker push side2022/dmc-api:${env.BUILD_NUMBER}"
 	    }
 	}
 
