@@ -22,7 +22,10 @@ pipeline {
 	}
 	stage ("Upload"){
 	    steps {
-	      sh "docker push side2022/dmc-api:${env.BUILD_NUMBER}"
+	      withCredentials([usernamePassword(credentialsId: "${params.DOCKERHUB_CREDENTIAL}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                      sh "echo $PASSWORD | docker login -u $USERNAME --password-stdin"
+                      sh "docker push mario21ic/dmc-api:${env.BUILD_NUMBER}"
+                      sh "docker logout"
 	    }
 	}
 
